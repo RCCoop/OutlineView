@@ -3,83 +3,81 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		336C5FE225CC9F1600230C37 /* OutlineViewExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336C5FE125CC9F1600230C37 /* OutlineViewExampleApp.swift */; };
-		336C5FE425CC9F1600230C37 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336C5FE325CC9F1600230C37 /* ContentView.swift */; };
-		336C5FE625CC9F1800230C37 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 336C5FE525CC9F1800230C37 /* Assets.xcassets */; };
-		336C5FE925CC9F1800230C37 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 336C5FE825CC9F1800230C37 /* Preview Assets.xcassets */; };
-		336C5FFD25CCA8DA00230C37 /* FileItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336C5FFC25CCA8D900230C37 /* FileItemView.swift */; };
-		336C600325CCAEE700230C37 /* OutlineView in Frameworks */ = {isa = PBXBuildFile; productRef = 336C600225CCAEE700230C37 /* OutlineView */; };
+		94DB3C14295103AF00515489 /* OutlineViewStandardCellsExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DB3C13295103AF00515489 /* OutlineViewStandardCellsExampleApp.swift */; };
+		94DB3C16295103AF00515489 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DB3C15295103AF00515489 /* ContentView.swift */; };
+		94DB3C18295103B200515489 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94DB3C17295103B200515489 /* Assets.xcassets */; };
+		94DB3C1B295103B200515489 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94DB3C1A295103B200515489 /* Preview Assets.xcassets */; };
+		94DB3C2C295105A100515489 /* OutlineViewStandardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DB3C2B295105A100515489 /* OutlineViewStandardCell.swift */; };
+		94DB3C2F2951067900515489 /* OutlineView in Frameworks */ = {isa = PBXBuildFile; productRef = 94DB3C2E2951067900515489 /* OutlineView */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		336C5FDE25CC9F1600230C37 /* OutlineViewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OutlineViewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		336C5FE125CC9F1600230C37 /* OutlineViewExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewExampleApp.swift; sourceTree = "<group>"; };
-		336C5FE325CC9F1600230C37 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		336C5FE525CC9F1800230C37 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		336C5FE825CC9F1800230C37 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		336C5FEA25CC9F1800230C37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		336C5FEB25CC9F1800230C37 /* OutlineViewExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OutlineViewExample.entitlements; sourceTree = "<group>"; };
-		336C5FFC25CCA8D900230C37 /* FileItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItemView.swift; sourceTree = "<group>"; };
-		336C600025CCAEDA00230C37 /* OutlineView */ = {isa = PBXFileReference; lastKnownFileType = folder; name = OutlineView; path = ../..; sourceTree = "<group>"; };
+		94DB3C10295103AF00515489 /* OutlineViewStandardCellsExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OutlineViewStandardCellsExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		94DB3C13295103AF00515489 /* OutlineViewStandardCellsExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewStandardCellsExampleApp.swift; sourceTree = "<group>"; };
+		94DB3C15295103AF00515489 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		94DB3C17295103B200515489 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		94DB3C1A295103B200515489 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		94DB3C1C295103B200515489 /* OutlineViewStandardCellsExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OutlineViewStandardCellsExample.entitlements; sourceTree = "<group>"; };
+		94DB3C24295104C000515489 /* OutlineView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = OutlineView; path = ../..; sourceTree = "<group>"; };
+		94DB3C2B295105A100515489 /* OutlineViewStandardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewStandardCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		336C5FDB25CC9F1500230C37 /* Frameworks */ = {
+		94DB3C0D295103AF00515489 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				336C600325CCAEE700230C37 /* OutlineView in Frameworks */,
+				94DB3C2F2951067900515489 /* OutlineView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		336C5FD525CC9F1500230C37 = {
+		94DB3C07295103AF00515489 = {
 			isa = PBXGroup;
 			children = (
-				336C600025CCAEDA00230C37 /* OutlineView */,
-				336C5FE025CC9F1600230C37 /* OutlineViewExample */,
-				336C5FDF25CC9F1600230C37 /* Products */,
-				336C5FF825CC9F7600230C37 /* Frameworks */,
+				94DB3C24295104C000515489 /* OutlineView */,
+				94DB3C12295103AF00515489 /* OutlineViewStandardCellsExample */,
+				94DB3C11295103AF00515489 /* Products */,
+				94DB3C2D2951067900515489 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		336C5FDF25CC9F1600230C37 /* Products */ = {
+		94DB3C11295103AF00515489 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				336C5FDE25CC9F1600230C37 /* OutlineViewExample.app */,
+				94DB3C10295103AF00515489 /* OutlineViewStandardCellsExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		336C5FE025CC9F1600230C37 /* OutlineViewExample */ = {
+		94DB3C12295103AF00515489 /* OutlineViewStandardCellsExample */ = {
 			isa = PBXGroup;
 			children = (
-				336C5FE125CC9F1600230C37 /* OutlineViewExampleApp.swift */,
-				336C5FE325CC9F1600230C37 /* ContentView.swift */,
-				336C5FFC25CCA8D900230C37 /* FileItemView.swift */,
-				336C5FE525CC9F1800230C37 /* Assets.xcassets */,
-				336C5FEA25CC9F1800230C37 /* Info.plist */,
-				336C5FEB25CC9F1800230C37 /* OutlineViewExample.entitlements */,
-				336C5FE725CC9F1800230C37 /* Preview Content */,
+				94DB3C2B295105A100515489 /* OutlineViewStandardCell.swift */,
+				94DB3C13295103AF00515489 /* OutlineViewStandardCellsExampleApp.swift */,
+				94DB3C15295103AF00515489 /* ContentView.swift */,
+				94DB3C17295103B200515489 /* Assets.xcassets */,
+				94DB3C1C295103B200515489 /* OutlineViewStandardCellsExample.entitlements */,
+				94DB3C19295103B200515489 /* Preview Content */,
 			);
-			path = OutlineViewExample;
+			path = OutlineViewStandardCellsExample;
 			sourceTree = "<group>";
 		};
-		336C5FE725CC9F1800230C37 /* Preview Content */ = {
+		94DB3C19295103B200515489 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				336C5FE825CC9F1800230C37 /* Preview Assets.xcassets */,
+				94DB3C1A295103B200515489 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		336C5FF825CC9F7600230C37 /* Frameworks */ = {
+		94DB3C2D2951067900515489 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -89,92 +87,92 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		336C5FDD25CC9F1500230C37 /* OutlineViewExample */ = {
+		94DB3C0F295103AF00515489 /* OutlineViewStandardCellsExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 336C5FEE25CC9F1800230C37 /* Build configuration list for PBXNativeTarget "OutlineViewExample" */;
+			buildConfigurationList = 94DB3C1F295103B200515489 /* Build configuration list for PBXNativeTarget "OutlineViewStandardCellsExample" */;
 			buildPhases = (
-				336C5FDA25CC9F1500230C37 /* Sources */,
-				336C5FDB25CC9F1500230C37 /* Frameworks */,
-				336C5FDC25CC9F1500230C37 /* Resources */,
+				94DB3C0C295103AF00515489 /* Sources */,
+				94DB3C0D295103AF00515489 /* Frameworks */,
+				94DB3C0E295103AF00515489 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = OutlineViewExample;
+			name = OutlineViewStandardCellsExample;
 			packageProductDependencies = (
-				336C600225CCAEE700230C37 /* OutlineView */,
+				94DB3C2E2951067900515489 /* OutlineView */,
 			);
-			productName = OutlineViewExample;
-			productReference = 336C5FDE25CC9F1600230C37 /* OutlineViewExample.app */;
+			productName = OutlineViewStandardCellsExample;
+			productReference = 94DB3C10295103AF00515489 /* OutlineViewStandardCellsExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		336C5FD625CC9F1500230C37 /* Project object */ = {
+		94DB3C08295103AF00515489 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1220;
-				LastUpgradeCheck = 1220;
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
 				TargetAttributes = {
-					336C5FDD25CC9F1500230C37 = {
-						CreatedOnToolsVersion = 12.2;
+					94DB3C0F295103AF00515489 = {
+						CreatedOnToolsVersion = 14.2;
 					};
 				};
 			};
-			buildConfigurationList = 336C5FD925CC9F1500230C37 /* Build configuration list for PBXProject "OutlineViewExample" */;
-			compatibilityVersion = "Xcode 9.3";
+			buildConfigurationList = 94DB3C0B295103AF00515489 /* Build configuration list for PBXProject "OutlineViewStandardCellsExample" */;
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 336C5FD525CC9F1500230C37;
-			productRefGroup = 336C5FDF25CC9F1600230C37 /* Products */;
+			mainGroup = 94DB3C07295103AF00515489;
+			productRefGroup = 94DB3C11295103AF00515489 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				336C5FDD25CC9F1500230C37 /* OutlineViewExample */,
+				94DB3C0F295103AF00515489 /* OutlineViewStandardCellsExample */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		336C5FDC25CC9F1500230C37 /* Resources */ = {
+		94DB3C0E295103AF00515489 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				336C5FE925CC9F1800230C37 /* Preview Assets.xcassets in Resources */,
-				336C5FE625CC9F1800230C37 /* Assets.xcassets in Resources */,
+				94DB3C1B295103B200515489 /* Preview Assets.xcassets in Resources */,
+				94DB3C18295103B200515489 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		336C5FDA25CC9F1500230C37 /* Sources */ = {
+		94DB3C0C295103AF00515489 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				336C5FFD25CCA8DA00230C37 /* FileItemView.swift in Sources */,
-				336C5FE425CC9F1600230C37 /* ContentView.swift in Sources */,
-				336C5FE225CC9F1600230C37 /* OutlineViewExampleApp.swift in Sources */,
+				94DB3C2C295105A100515489 /* OutlineViewStandardCell.swift in Sources */,
+				94DB3C16295103AF00515489 /* ContentView.swift in Sources */,
+				94DB3C14295103AF00515489 /* OutlineViewStandardCellsExampleApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		336C5FEC25CC9F1800230C37 /* Debug */ = {
+		94DB3C1D295103B200515489 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -218,7 +216,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -228,14 +226,13 @@
 			};
 			name = Debug;
 		};
-		336C5FED25CC9F1800230C37 /* Release */ = {
+		94DB3C1E295103B200515489 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -273,7 +270,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -282,50 +279,56 @@
 			};
 			name = Release;
 		};
-		336C5FEF25CC9F1800230C37 /* Debug */ = {
+		94DB3C20295103B200515489 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = OutlineViewExample/OutlineViewExample.entitlements;
+				CODE_SIGN_ENTITLEMENTS = OutlineViewStandardCellsExample/OutlineViewStandardCellsExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"OutlineViewExample/Preview Content\"";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"OutlineViewStandardCellsExample/Preview Content\"";
 				DEVELOPMENT_TEAM = AMSDNQC8GP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = OutlineViewExample/Info.plist;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.samar.OutlineViewExample;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ltprojects.OutlineViewStandardCellsExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
-		336C5FF025CC9F1800230C37 /* Release */ = {
+		94DB3C21295103B200515489 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = OutlineViewExample/OutlineViewExample.entitlements;
+				CODE_SIGN_ENTITLEMENTS = OutlineViewStandardCellsExample/OutlineViewStandardCellsExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"OutlineViewExample/Preview Content\"";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"OutlineViewStandardCellsExample/Preview Content\"";
 				DEVELOPMENT_TEAM = AMSDNQC8GP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = OutlineViewExample/Info.plist;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.samar.OutlineViewExample;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ltprojects.OutlineViewStandardCellsExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -333,20 +336,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		336C5FD925CC9F1500230C37 /* Build configuration list for PBXProject "OutlineViewExample" */ = {
+		94DB3C0B295103AF00515489 /* Build configuration list for PBXProject "OutlineViewStandardCellsExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				336C5FEC25CC9F1800230C37 /* Debug */,
-				336C5FED25CC9F1800230C37 /* Release */,
+				94DB3C1D295103B200515489 /* Debug */,
+				94DB3C1E295103B200515489 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		336C5FEE25CC9F1800230C37 /* Build configuration list for PBXNativeTarget "OutlineViewExample" */ = {
+		94DB3C1F295103B200515489 /* Build configuration list for PBXNativeTarget "OutlineViewStandardCellsExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				336C5FEF25CC9F1800230C37 /* Debug */,
-				336C5FF025CC9F1800230C37 /* Release */,
+				94DB3C20295103B200515489 /* Debug */,
+				94DB3C21295103B200515489 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -354,11 +357,11 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		336C600225CCAEE700230C37 /* OutlineView */ = {
+		94DB3C2E2951067900515489 /* OutlineView */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OutlineView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = 336C5FD625CC9F1500230C37 /* Project object */;
+	rootObject = 94DB3C08295103AF00515489 /* Project object */;
 }
