@@ -114,6 +114,9 @@ where Data.Element: Identifiable {
                 selectedItem = newSelection
                 selectionChanged(selectedItem?.value)
             }
+        } else {
+            selectedItem = nil
+            selectionChanged(nil)
         }
     }
 
