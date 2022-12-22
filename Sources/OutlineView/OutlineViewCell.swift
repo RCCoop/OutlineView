@@ -1,11 +1,16 @@
 
 import AppKit
 
+/// A standard `NSTableCellView`-based cell with an optional image on the left,
+/// and a required string-displaying text field on the right. Provided functions
+/// are available for configuring the image and text, as well as basic formatting
+/// of the UI.
 public class OutlineViewCell: NSTableCellView, NSTextFieldDelegate {
-        
-    var onCommit: ((String) -> Void)?
-    var textColor: NSColor?
+
+    var onCommit: ((String) -> String)?
     let spacingConstraint: NSLayoutConstraint
+    
+    // MARK: - Initializer
     
     public init() {
         let textField = NSTextField(string: "")
@@ -51,31 +56,75 @@ public class OutlineViewCell: NSTableCellView, NSTextFieldDelegate {
         imgView.layer?.borderWidth = 2.0
     }
     
-    public override func prepareForReuse() {
-        super.prepareForReuse()
-        configure(image: nil, text: "DemoText")
-        onEditingCommit(nil)
-    }
-    
-    public func setTextFont(_ font: NSFont) {
-        textField?.font = font
-    }
-    
-    public func onEditingCommit(_ action: ((String) -> Void)?) {
-        textField?.isSelectable = action != nil
-        textField?.isEditable = action != nil
-        self.onCommit = action
-    }
-    
-    public func configure(image: NSImage?, text: String) {
-        imageView?.image = image
-        textField?.stringValue = text
-        
-        spacingConstraint.constant = image == nil ? 0.0 : 5.0
-    }
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Configuration
+    
+    /// Sets the font of the text label.
+    /// - Returns: self, for use in chaining modifiers
+    @discardableResult
+    public func textFont(_ font: NSFont) -> Self {
+        textField?.font = font
+        return self
+    }
+    
+    /// Sets the text color of the text label.
+    /// - Returns: self, for use in chaining modifiers
+    @discardableResult
+    public func textColor(_ color: NSColor?) -> Self {
+        textField?.textColor = color
+        return self
+    }
+    
+    /// Adds a modifier to the cell that allows for text editing.
+    ///
+    /// - Parameter action: An optional closure that takes the newly edited
+    ///   string value, and returns a string value that the text label should
+    ///   be set to after completion (in case validation fails and the text
+    ///   should be modified immediately). If no closure is provided, the
+    ///   text cell will not be editable.
+    /// - Returns: self, for use in chaining modifiers
+    @discardableResult
+    public func onEditingCommit(_ action: ((String) -> String)?) -> Self {
+        textField?.isSelectable = action != nil
+        textField?.isEditable = action != nil
+        self.onCommit = action
+        return self
+    }
+    
+    /// The basic configuration function for `OutlineViewCell`, which
+    /// sets the image and text to display.
+    /// - Parameters:
+    ///   - image: An optional image to display on the left-hand edge
+    ///     of the cell.
+    ///   - text: The text to be displayed in the cell's label.
+    /// - Returns: self, for use in chaining modifiers
+    @discardableResult
+    public func configure(image: NSImage?, text: String) -> Self {
+        imageView?.image = image
+        textField?.stringValue = text
+        spacingConstraint.constant = image == nil ? 0.0 : 5.0
+        return self
+    }
+    
+    // MARK: - Internal-use Functions
+    
+    public override func prepareForReuse() {
+        super.prepareForReuse()
+        configure(image: nil, text: "")
+        onEditingCommit(nil)
+    }
+    
+
+    public func controlTextDidEndEditing(_ note: Notification) {
+        guard let textField,
+              textField.isEqual(note.object),
+              onCommit != nil
+        else { return }
+        
+        textField.stringValue = onCommit!(textField.stringValue)
+    }
+        
 }

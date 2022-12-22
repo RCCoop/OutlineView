@@ -58,10 +58,15 @@ where Data.Element: Identifiable {
     ///     at the key path is `nil`, then the outline group treats `data` as a
     ///     leaf in the tree, like a regular file in a file system.
     ///   - selection: A binding to a selected value.
-    ///   - content: A closure that produces an `NSView` based on an
-    ///     element in `data`. An `NSTableCellView` subclass is preferred.
-    ///     The `NSView` should return the correct `fittingSize`
-    ///     as it is used to determine the height of the cell.
+    ///   - newCell: A closure that produces a blank-slate `CellType` view to be
+    ///     to be used by the OutlineView when it needs a brand-new cell rather
+    ///     than one that can be reused. Identification and reuse of this view
+    ///     will be handled internally. If you use a custom `NSView` or `NSTableCellView`,
+    ///     you should override the class's `prepareForReuse` function to reset
+    ///     its UI to a default state between reuses.
+    ///   - configureCell: A closure that takes a reused `CellType` view and
+    ///     the Data element, and applies the data element to the cell
+    ///     in order to configure its view for display.
     public init(
         _ data: Data,
         children: KeyPath<Data.Element, Data?>,
@@ -104,10 +109,15 @@ where Data.Element: Identifiable {
     ///     at the key path is `nil`, then the outline group treats `data` as a
     ///     leaf in the tree, like a regular file in a file system.
     ///   - selection: A binding to a selected value.
-    ///   - content: A closure that produces an `NSView` based on an
-    ///     element in `data`. An `NSTableCellView` subclass is preferred.
-    ///     The `NSView` should return the correct `fittingSize`
-    ///     as it is used to determine the height of the cell.
+    ///   - newCell: A closure that produces a blank-slate `CellType` view to be
+    ///     to be used by the OutlineView when it needs a brand-new cell rather
+    ///     than one that can be reused. Identification and reuse of this view
+    ///     will be handled internally. If you use a custom `NSView` or `NSTableCellView`,
+    ///     you should override the class's `prepareForReuse` function to reset
+    ///     its UI to a default state between reuses.
+    ///   - configureCell: A closure that takes a reused `CellType` view and
+    ///     the Data element, and applies the data element to the cell
+    ///     in order to configure its view for display.
     @available(macOS 11.0, *)
     public init(
         _ data: Data,
@@ -117,6 +127,7 @@ where Data.Element: Identifiable {
         newCell: @escaping () -> CellType,
         configureCell: @escaping (Data.Element, CellType) -> Void
     ) {
+        // TODO: Update parameter documentation
         self.data = data
         self.children = children
         self._selection = selection

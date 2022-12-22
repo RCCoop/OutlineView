@@ -78,15 +78,17 @@ struct ContentView: View {
                     right: 0)
             },
             newCell: { () -> OutlineViewCell in
-                let cell = OutlineViewCell()
-                cell.setTextFont(.preferredFont(forTextStyle: .title2))
-                return cell
+                OutlineViewCell()
+                    .textFont(.preferredFont(forTextStyle: .title2))
             },
             configureCell: { (fileItem, cell) in
                 cell.configure(
                     image: fileItem.accessoryImage,
                     text: fileItem.description
-                )
+                ).onEditingCommit { text in
+                    print("You tried to rename \(fileItem.name) to \(text), but I'm not gonna let you!")
+                    return fileItem.name
+                }.textColor(.secondaryLabelColor)
             }
         )
         .outlineViewStyle(.inset)

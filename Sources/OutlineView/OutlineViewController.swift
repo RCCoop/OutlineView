@@ -130,17 +130,18 @@ extension OutlineViewController {
 }
 
 
+/// A subclass of NSOutlineView that overrides the frame of the disclosure button
+/// in order to keep it vertically centered in each row.
+///
+/// When NSOutlineView rows have a height greater than standard, the only way to
+/// get the disclosure to display vertically centered is to override `frameOfOutlineCell(atRow:)`.
+/// Bizarrely, with some testing I've found that you don't need to recalculate a new frame
+/// for the outline cell... just calling `super.frameOfOutlineCell(atRow:)` seems
+/// to bring the disclosure button into the correct center.
 class CenteringOutlineView: NSOutlineView {
     
     override func frameOfOutlineCell(atRow row: Int) -> NSRect {
-        var frame = super.frameOfOutlineCell(atRow: row)
-        if frame != .zero {
-            let originalHeight = frame.height
-            let standardHeight = 13.0
-            frame.origin.y = frame.origin.y + (originalHeight / 2.0) - (standardHeight / 2.0)
-            frame.size.height = standardHeight
-        }
-        return frame
+        super.frameOfOutlineCell(atRow: row)
     }
     
 }
