@@ -1,15 +1,18 @@
 import SwiftUI
 import Cocoa
 
-@available(macOS 10.15, *)
-public struct OutlineView<Data: Sequence>: NSViewControllerRepresentable
-where Data.Element: Identifiable {
-    public typealias NSViewControllerType = OutlineViewController<Data>
+typealias CellBuilder<CellType: NSView> = () -> CellType
+typealias CellConfigurer<Element, CellType: NSView> = (Element, CellType) -> Void
 
+@available(macOS 10.15, *)
+public struct OutlineView<Data: Sequence, CellType: NSView>: NSViewControllerRepresentable
+where Data.Element: Identifiable {
+        
     let data: Data
     let children: KeyPath<Data.Element, Data?>
     @Binding var selection: Data.Element?
-    var content: (Data.Element) -> NSView
+    var cellBuilder: CellBuilder<CellType>
+    var cellConfiguration: CellConfigurer<Data.Element, CellType>
     var separatorInsets: ((Data.Element) -> NSEdgeInsets)?
 
     /// Outline view style is unavailable on macOS 10.15 and below.
@@ -63,13 +66,15 @@ where Data.Element: Identifiable {
         _ data: Data,
         children: KeyPath<Data.Element, Data?>,
         selection: Binding<Data.Element?>,
-        content: @escaping (Data.Element) -> NSView
+        newCell: @escaping () -> CellType,
+        configureCell: @escaping (Data.Element, CellType) -> Void
     ) {
         self.data = data
         self.children = children
         self._selection = selection
         self.separatorVisibility = .hidden
-        self.content = content
+        self.cellBuilder = newCell
+        self.cellConfiguration = configureCell
     }
 
     /// Creates an outline view from a collection of root data elements and
@@ -109,21 +114,24 @@ where Data.Element: Identifiable {
         children: KeyPath<Data.Element, Data?>,
         selection: Binding<Data.Element?>,
         separatorInsets: @escaping (Data.Element) -> NSEdgeInsets,
-        content: @escaping (Data.Element) -> NSView
+        newCell: @escaping () -> CellType,
+        configureCell: @escaping (Data.Element, CellType) -> Void
     ) {
         self.data = data
         self.children = children
         self._selection = selection
         self.separatorInsets = separatorInsets
         self.separatorVisibility = .visible
-        self.content = content
+        self.cellBuilder = newCell
+        self.cellConfiguration = configureCell
     }
 
-    public func makeNSViewController(context: Context) -> OutlineViewController<Data> {
+    public func makeNSViewController(context: Context) -> OutlineViewController<Data, CellType> {
         let controller = OutlineViewController(
             data: data,
             children: children,
-            content: content,
+            cellBuilder: cellBuilder,
+            cellConfiguration: cellConfiguration,
             selectionChanged: { selection = $0 },
             separatorInsets: separatorInsets)
         controller.setIndentation(to: indentation)
@@ -134,7 +142,7 @@ where Data.Element: Identifiable {
     }
 
     public func updateNSViewController(
-        _ outlineController: OutlineViewController<Data>,
+        _ outlineController: OutlineViewController<Data, CellType>,
         context: Context
     ) {
         outlineController.updateData(newValue: data)

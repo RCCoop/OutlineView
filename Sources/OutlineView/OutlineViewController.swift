@@ -1,13 +1,13 @@
 import Cocoa
 
 @available(macOS 10.15, *)
-public class OutlineViewController<Data: Sequence>: NSViewController
+public class OutlineViewController<Data: Sequence, CellType: NSView>: NSViewController
 where Data.Element: Identifiable {
-    let outlineView = NSOutlineView()
+    let outlineView = CenteringOutlineView()
     let scrollView = NSScrollView(frame: NSRect(x: 0, y: 0, width: 400, height: 400))
     
     let dataSource: OutlineViewDataSource<Data>
-    let delegate: OutlineViewDelegate<Data>
+    let delegate: OutlineViewDelegate<Data, CellType>
     let updater = OutlineViewUpdater<Data>()
 
     let childrenPath: KeyPath<Data.Element, Data?>
@@ -15,7 +15,8 @@ where Data.Element: Identifiable {
     init(
         data: Data,
         children: KeyPath<Data.Element, Data?>,
-        content: @escaping (Data.Element) -> NSView,
+        cellBuilder: @escaping CellBuilder<CellType>,
+        cellConfiguration: @escaping CellConfigurer<Data.Element, CellType>,
         selectionChanged: @escaping (Data.Element?) -> Void,
         separatorInsets: ((Data.Element) -> NSEdgeInsets)?
     ) {
@@ -28,6 +29,7 @@ where Data.Element: Identifiable {
         outlineView.headerView = nil
         outlineView.usesAutomaticRowHeights = true
         outlineView.columnAutoresizingStyle = .uniformColumnAutoresizingStyle
+        outlineView.backgroundColor = .clear
 
         let onlyColumn = NSTableColumn()
         onlyColumn.resizingMask = .autoresizingMask
@@ -36,7 +38,8 @@ where Data.Element: Identifiable {
         dataSource = OutlineViewDataSource(
             items: data.map { OutlineViewItem(value: $0, children: children) })
         delegate = OutlineViewDelegate(
-            content: content,
+            buildCell: cellBuilder,
+            configureCell: cellConfiguration,
             selectionChanged: selectionChanged,
             separatorInsets: separatorInsets)
         outlineView.dataSource = dataSource
@@ -124,4 +127,20 @@ extension OutlineViewController {
         outlineView.gridColor = color
         outlineView.reloadData()
     }
+}
+
+
+class CenteringOutlineView: NSOutlineView {
+    
+    override func frameOfOutlineCell(atRow row: Int) -> NSRect {
+        var frame = super.frameOfOutlineCell(atRow: row)
+        if frame != .zero {
+            let originalHeight = frame.height
+            let standardHeight = 13.0
+            frame.origin.y = frame.origin.y + (originalHeight / 2.0) - (standardHeight / 2.0)
+            frame.size.height = standardHeight
+        }
+        return frame
+    }
+    
 }

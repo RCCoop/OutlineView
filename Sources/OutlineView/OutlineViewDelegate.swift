@@ -1,23 +1,28 @@
 import Cocoa
 
 @available(macOS 10.15, *)
-class OutlineViewDelegate<Data: Sequence>: NSObject, NSOutlineViewDelegate
+class OutlineViewDelegate<Data: Sequence, CellType: NSView>: NSObject, NSOutlineViewDelegate
 where Data.Element: Identifiable {
-    let content: (Data.Element) -> NSView
+    let buildCell: CellBuilder<CellType>
+    let configureCell: CellConfigurer<Data.Element, CellType>
     let selectionChanged: (Data.Element?) -> Void
     let separatorInsets: ((Data.Element) -> NSEdgeInsets)?
     var selectedItem: OutlineViewItem<Data>?
 
+    let cellIdentifier = NSUserInterfaceItemIdentifier("ReusableContentView")
+    
     func typedItem(_ item: Any) -> OutlineViewItem<Data> {
         item as! OutlineViewItem<Data>
     }
 
     init(
-        content: @escaping (Data.Element) -> NSView,
+        buildCell: @escaping CellBuilder<CellType>,
+        configureCell: @escaping CellConfigurer<Data.Element, CellType>,
         selectionChanged: @escaping (Data.Element?) -> Void,
         separatorInsets: ((Data.Element) -> NSEdgeInsets)?
     ) {
-        self.content = content
+        self.buildCell = buildCell
+        self.configureCell = configureCell
         self.selectionChanged = selectionChanged
         self.separatorInsets = separatorInsets
     }
@@ -27,7 +32,19 @@ where Data.Element: Identifiable {
         viewFor tableColumn: NSTableColumn?,
         item: Any
     ) -> NSView? {
-        content(typedItem(item).value)
+        
+        let view: CellType
+        if let reusedView = outlineView.makeView(withIdentifier: cellIdentifier, owner: nil),
+           let reusedTypedView = reusedView as? CellType
+        {
+            view = reusedTypedView
+        } else {
+            view = buildCell()
+            view.identifier = cellIdentifier
+        }
+        
+        configureCell(typedItem(item).value, view)
+        return view
     }
 
     func outlineView(
