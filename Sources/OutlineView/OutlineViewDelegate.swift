@@ -62,6 +62,8 @@ where Data.Element: Identifiable {
         }
     }
 
+    /*
+     // This doesn't seem to be necessary, after several rounds of testing
     func outlineView(
         _ outlineView: NSOutlineView,
         heightOfRowByItem item: Any
@@ -98,6 +100,7 @@ where Data.Element: Identifiable {
         view.widthAnchor.constraint(equalToConstant: width).isActive = true
         return view.fittingSize.height
     }
+     */
 
     func outlineViewItemDidExpand(_ notification: Notification) {
         let outlineView = notification.object as! NSOutlineView
