@@ -45,6 +45,12 @@ where Data.Element: Identifiable {
             // Parent needs to be updated as the children have changed.
             // Children are not reloaded to allow animation.
             outlineView.reloadItem(parent, reloadChildren: false)
+            // Also need to reload dataForRowIndex due to edits bug...
+            // see https://stackoverflow.com/q/60397648/1275947
+            let parentRow = outlineView.row(forItem: parent)
+            if parentRow != -1 {
+                outlineView.reloadData(forRowIndexes: IndexSet([parentRow]), columnIndexes: IndexSet([0]))
+            }
         }
         
         guard assumeOutlineIsExpanded || outlineView.isItemExpanded(parent) else {

@@ -116,6 +116,18 @@ where Data.Element: Identifiable {
             }
         }
     }
+    
+    func outlineView(
+        _ outlineView: NSOutlineView,
+        shouldEdit tableColumn: NSTableColumn?,
+        item: Any
+    ) -> Bool {
+        let typedItem = typedItem(item)
+        guard let editableItem = typedItem.value as? EditableOutlineData
+        else { return false }
+        
+        return editableItem.outlineViewShouldEdit
+    }
 
     func selectRow(
         for item: OutlineViewItem<Data>?,
