@@ -22,7 +22,8 @@ where Drop.DataElement == Data.Element {
 
     let data: Data
     let childSource: ChildSource<Data>
-    @Binding var selection: Data.Element?
+    var selection: Binding<Data.Element?>?
+    var expandedItems: Binding<Set<Data.Element.ID>>?
     var content: (Data.Element) -> NSView
     var separatorInsets: ((Data.Element) -> NSEdgeInsets)?
 
@@ -55,7 +56,8 @@ where Drop.DataElement == Data.Element {
             data: data,
             childrenSource: childSource,
             content: content,
-            selectionChanged: { selection = $0 },
+            selectionChanged: { selection?.wrappedValue = $0 },
+            expandedStateChanged: { expandedItems?.wrappedValue = $0 },
             separatorInsets: separatorInsets)
         controller.setIndentation(to: indentation)
         if #available(macOS 11.0, *) {
@@ -69,7 +71,8 @@ where Drop.DataElement == Data.Element {
         context: Context
     ) {
         outlineController.updateData(newValue: data)
-        outlineController.changeSelectedItem(to: selection)
+        if let expandedItems { outlineController.changeExpandedItems(to: expandedItems.wrappedValue) }
+        if let selection { outlineController.changeSelectedItem(to: selection.wrappedValue) }
         outlineController.setRowSeparator(visibility: separatorVisibility)
         outlineController.setRowSeparator(color: separatorColor)
         outlineController.setDragSourceWriter(dragDataSource)
@@ -193,12 +196,14 @@ public extension OutlineView {
     init(
         _ data: Data,
         children: KeyPath<Data.Element, Data?>,
-        selection: Binding<Data.Element?>,
+        selection: Binding<Data.Element?>? = nil,
+        expandedItems: Binding<Set<Data.Element.ID>>? = nil,
         content: @escaping (Data.Element) -> NSView
     ) {
         self.data = data
         self.childSource = .keyPath(children)
-        self._selection = selection
+        self.selection = selection
+        self.expandedItems = expandedItems
         self.separatorVisibility = .hidden
         self.content = content
     }
@@ -234,12 +239,14 @@ public extension OutlineView {
     ///     as it is used to determine the height of the cell.
     init(
         _ data: Data,
-        selection: Binding<Data.Element?>,
+        selection: Binding<Data.Element?>? = nil,
+        expandedItems: Binding<Set<Data.Element.ID>>? = nil,
         children: @escaping (Data.Element) -> Data?,
         content: @escaping (Data.Element) -> NSView
     ) {
         self.data = data
-        self._selection = selection
+        self.selection = selection
+        self.expandedItems = expandedItems
         self.childSource = .provider(children)
         self.separatorVisibility = .hidden
         self.content = content
@@ -282,12 +289,14 @@ public extension OutlineView where Drop == NoDropReceiver<Data.Element> {
     init(
         _ data: Data,
         children: KeyPath<Data.Element, Data?>,
-        selection: Binding<Data.Element?>,
+        selection: Binding<Data.Element?>? = nil,
+        expandedItems: Binding<Set<Data.Element.ID>>? = nil,
         content: @escaping (Data.Element) -> NSView
     ) {
         self.data = data
         self.childSource = .keyPath(children)
-        self._selection = selection
+        self.selection = selection
+        self.expandedItems = expandedItems
         self.separatorVisibility = .hidden
         self.content = content
     }
@@ -323,12 +332,14 @@ public extension OutlineView where Drop == NoDropReceiver<Data.Element> {
     ///     as it is used to determine the height of the cell.
     init(
         _ data: Data,
-        selection: Binding<Data.Element?>,
+        selection: Binding<Data.Element?>? = nil,
+        expandedItems: Binding<Set<Data.Element.ID>>? = nil,
         children: @escaping (Data.Element) -> Data?,
         content: @escaping (Data.Element) -> NSView
     ) {
         self.data = data
-        self._selection = selection
+        self.selection = selection
+        self.expandedItems = expandedItems
         self.childSource = .provider(children)
         self.separatorVisibility = .hidden
         self.content = content
@@ -375,13 +386,15 @@ public extension OutlineView {
     init(
         _ data: Data,
         children: KeyPath<Data.Element, Data?>,
-        selection: Binding<Data.Element?>,
+        selection: Binding<Data.Element?>? = nil,
+        expandedItems: Binding<Set<Data.Element.ID>>? = nil,
         separatorInsets: ((Data.Element) -> NSEdgeInsets)? = nil,
         content: @escaping (Data.Element) -> NSView
     ) {
         self.data = data
         self.childSource = .keyPath(children)
-        self._selection = selection
+        self.selection = selection
+        self.expandedItems = expandedItems
         self.separatorInsets = separatorInsets
         self.separatorVisibility = separatorInsets == nil ? .hidden : .visible
         self.content = content
@@ -422,13 +435,15 @@ public extension OutlineView {
     @available(macOS 11.0, *)
     init(
         _ data: Data,
-        selection: Binding<Data.Element?>,
+        selection: Binding<Data.Element?>? = nil,
+        expandedItems: Binding<Set<Data.Element.ID>>? = nil,
         children: @escaping (Data.Element) -> Data?,
         separatorInsets: ((Data.Element) -> NSEdgeInsets)? = nil,
         content: @escaping (Data.Element) -> NSView
     ) {
         self.data = data
-        self._selection = selection
+        self.selection = selection
+        self.expandedItems = expandedItems
         self.childSource = .provider(children)
         self.separatorInsets = separatorInsets
         self.separatorVisibility = separatorInsets == nil ? .hidden : .visible
@@ -475,13 +490,15 @@ public extension OutlineView where Drop == NoDropReceiver<Data.Element> {
     init(
         _ data: Data,
         children: KeyPath<Data.Element, Data?>,
-        selection: Binding<Data.Element?>,
+        selection: Binding<Data.Element?>? = nil,
+        expandedItems: Binding<Set<Data.Element.ID>>? = nil,
         separatorInsets: ((Data.Element) -> NSEdgeInsets)? = nil,
         content: @escaping (Data.Element) -> NSView
     ) {
         self.data = data
         self.childSource = .keyPath(children)
-        self._selection = selection
+        self.selection = selection
+        self.expandedItems = expandedItems
         self.separatorInsets = separatorInsets
         self.separatorVisibility = separatorInsets == nil ? .hidden : .visible
         self.content = content
@@ -521,13 +538,15 @@ public extension OutlineView where Drop == NoDropReceiver<Data.Element> {
     ///     as it is used to determine the height of the cell.
     init(
         _ data: Data,
-        selection: Binding<Data.Element?>,
+        selection: Binding<Data.Element?>? = nil,
+        expandedItems: Binding<Set<Data.Element.ID>>? = nil,
         children: @escaping (Data.Element) -> Data?,
         separatorInsets: ((Data.Element) -> NSEdgeInsets)? = nil,
         content: @escaping (Data.Element) -> NSView
     ) {
         self.data = data
-        self._selection = selection
+        self.selection = selection
+        self.expandedItems = expandedItems
         self.childSource = .provider(children)
         self.separatorInsets = separatorInsets
         self.separatorVisibility = separatorInsets == nil ? .hidden : .visible

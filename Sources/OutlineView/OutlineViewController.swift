@@ -1,4 +1,5 @@
 import Cocoa
+import Combine
 
 @available(macOS 10.15, *)
 public class OutlineViewController<Data: Sequence, Drop: DropReceiver>: NSViewController
@@ -11,12 +12,17 @@ where Drop.DataElement == Data.Element {
     let updater = OutlineViewUpdater<Data>()
 
     let childrenSource: ChildSource<Data>
+    
+    var blockExpansionListener = false
+    var expansionListeners = Set<AnyCancellable>()
+    let expandedStateChanged: (Set<Data.Element.ID>) -> Void
 
     init(
         data: Data,
         childrenSource: ChildSource<Data>,
         content: @escaping (Data.Element) -> NSView,
         selectionChanged: @escaping (Data.Element?) -> Void,
+        expandedStateChanged: @escaping (Set<Data.Element.ID>) -> Void,
         separatorInsets: ((Data.Element) -> NSEdgeInsets)?
     ) {
         scrollView.documentView = outlineView
@@ -45,9 +51,24 @@ where Drop.DataElement == Data.Element {
         outlineView.delegate = delegate
 
         self.childrenSource = childrenSource
+        self.expandedStateChanged = expandedStateChanged
         
         super.init(nibName: nil, bundle: nil)
 
+        // Listen for expand/collapse notifications in order to keep expandedItems up to date
+        NotificationCenter.default.publisher(for: NSOutlineView.itemDidExpandNotification)
+            .compactMap(NSOutlineView.expansionNotificationInfo(_:))
+            .sink { [weak self] in
+                self?.expandedItemsStateDidChange(outlineView: $0.outlineView, changedItem: $0.object)
+            }
+            .store(in: &expansionListeners)
+        NotificationCenter.default.publisher(for: NSOutlineView.itemDidCollapseNotification)
+            .compactMap(NSOutlineView.expansionNotificationInfo(_:))
+            .sink { [weak self] in
+                self?.expandedItemsStateDidChange(outlineView: $0.outlineView, changedItem: $0.object)
+            }
+            .store(in: &expansionListeners)
+        
         view.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -100,6 +121,34 @@ extension OutlineViewController {
         delegate.changeSelectedItem(
             to: item.map { OutlineViewItem(value: $0, children: childrenSource) },
             in: outlineView)
+    }
+    
+    func changeExpandedItems(to itemIds: Set<Data.Element.ID>) {
+        guard itemIds != readExpandedItemIds() else { return }
+        
+        blockExpansionListener = true
+        
+        var n = 0
+        while n < outlineView.numberOfRows {
+            if let typedItem = outlineView.item(atRow: n) as? OutlineViewItem<Data> {
+                let isExpanded = outlineView.isItemExpanded(typedItem)
+                if isExpanded && !itemIds.contains(typedItem.id) {
+                    outlineView.collapseItem(typedItem)
+                } else if !isExpanded && itemIds.contains(typedItem.id) {
+                    outlineView.expandItem(typedItem)
+                } else {
+                    n += 1
+                }
+            } else {
+                n += 1
+            }
+        }
+        
+        blockExpansionListener = false
+        
+        DispatchQueue.main.async {
+            self.expandedStateChanged(self.readExpandedItemIds())
+        }
     }
 
     @available(macOS 11.0, *)
@@ -156,5 +205,26 @@ extension OutlineViewController {
         {
             outlineView.registerForDraggedTypes(acceptedTypes)
         }
+    }
+}
+
+// MARK: - Private Helpers
+
+@available(macOS 10.15, *)
+private extension OutlineViewController {
+    func expandedItemsStateDidChange(outlineView: NSOutlineView, changedItem: Any) {
+        guard outlineView == self.outlineView,
+              !blockExpansionListener
+        else { return }
+        
+        expandedStateChanged(readExpandedItemIds())
+    }
+    
+    func readExpandedItemIds() -> Set<Data.Element.ID> {
+        let newExpandedItems = stride(from: 0, to: outlineView.numberOfRows, by: 1)
+            .compactMap { outlineView.item(atRow: $0) as? OutlineViewItem<Data> }
+            .filter { outlineView.isItemExpanded($0) }
+            .map { $0.id }
+        return Set(newExpandedItems)
     }
 }
