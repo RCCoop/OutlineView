@@ -3,7 +3,7 @@ import Cocoa
 @available(macOS 10.15, *)
 public class OutlineViewController<Data: Sequence, Drop: DropReceiver>: NSViewController
 where Drop.DataElement == Data.Element {
-    let outlineView = CenteredNSOutlineView()
+    let outlineView = RCOutlineView<Data>()
     let scrollView = NSScrollView(frame: NSRect(x: 0, y: 0, width: 400, height: 400))
     
     let dataSource: OutlineViewDataSource<Data, Drop>
@@ -117,6 +117,18 @@ extension OutlineViewController {
             outlineView.gridStyleMask = []
         case .visible:
             outlineView.gridStyleMask = .solidHorizontalGridLineMask
+        }
+    }
+    
+    func setContextMenuHandler(_ handler: ContextMenuHandler<Data.Element>?) {
+        if let handler {
+            outlineView.menuProvider = { [weak self] (event, clickedItem) in
+                let (menu, highlight) = handler(event, clickedItem)
+                self?.changeSelectedItem(to: highlight)
+                return menu
+            }
+        } else {
+            outlineView.menuProvider = nil
         }
     }
 

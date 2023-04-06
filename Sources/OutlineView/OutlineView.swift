@@ -43,7 +43,7 @@ where Drop.DataElement == Data.Element {
     var indentation: CGFloat = 13.0
     var separatorVisibility: SeparatorVisibility
     var separatorColor: NSColor = .separatorColor
-
+    var contextMenuHandler: ContextMenuHandler<Data.Element>? = nil
     var dragDataSource: DragSourceWriter<Data.Element>?
     var dropReceiver: Drop? = nil
     var acceptedDropTypes: [NSPasteboard.PasteboardType]? = nil
@@ -75,6 +75,7 @@ where Drop.DataElement == Data.Element {
         outlineController.setDragSourceWriter(dragDataSource)
         outlineController.setDropReceiver(dropReceiver)
         outlineController.setAcceptedDragTypes(acceptedDropTypes)
+        outlineController.setContextMenuHandler(contextMenuHandler)
     }
 }
 
@@ -94,6 +95,19 @@ public extension OutlineView {
     func outlineViewIndentation(_ width: CGFloat) -> Self {
         var mutableSelf = self
         mutableSelf.indentation = width
+        return mutableSelf
+    }
+    
+    /// Adds ability for right-clicking on the OutlineView to display a context
+    /// menu.
+    ///
+    /// The closure takes as parameters the `NSEvent` that resulted in the call for
+    /// a menu, and the `Data.Element` at the clicked location. The return value of
+    /// the closure is a tuple containing the `NSMenu` to display (if any), and the
+    /// `Data.Element` to highlight (if any).
+    func contextMenu(_ handler: @escaping ContextMenuHandler<Data.Element>) -> Self {
+        var mutableSelf = self
+        mutableSelf.contextMenuHandler = handler
         return mutableSelf
     }
 
