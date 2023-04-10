@@ -108,12 +108,10 @@ where Data.Element: OutlineViewData {
 
     func outlineViewSelectionDidChange(_ notification: Notification) {
         let outlineView = notification.object as! NSOutlineView
-        if outlineView.selectedRow != -1 {
-            let newSelection = outlineView.item(atRow: outlineView.selectedRow).map(typedItem)
-            if selectedItem?.id != newSelection?.id {
-                selectedItem = newSelection
-                selectionChanged(selectedItem?.value)
-            }
+        let newSelection = outlineView.item(atRow: outlineView.selectedRow).map(typedItem)
+        if selectedItem?.id != newSelection?.id {
+            selectedItem = newSelection
+            selectionChanged(selectedItem?.value)
         }
     }
     
