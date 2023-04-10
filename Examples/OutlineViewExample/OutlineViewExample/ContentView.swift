@@ -9,7 +9,7 @@ import SwiftUI
 import OutlineView
 import Cocoa
 
-struct FileItem: Hashable, Identifiable, CustomStringConvertible {
+struct FileItem: OutlineViewData, CustomStringConvertible, Equatable {
     var id = UUID()
     var name: String
     var children: [FileItem]? = nil
@@ -20,6 +20,12 @@ struct FileItem: Hashable, Identifiable, CustomStringConvertible {
         case .some(let children):
             return children.isEmpty ? "📂 \(name)" : "📁 \(name)"
         }
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(name)
+        hasher.combine(children != nil)
     }
 }
 

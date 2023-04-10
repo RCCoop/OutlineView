@@ -2,7 +2,7 @@ import XCTest
 @testable import OutlineView
 
 class OutlineViewItemTests: XCTestCase {
-    struct TestItem: Identifiable, Equatable {
+    struct TestItem: OutlineViewData {
         var id: Int
         var children: [TestItem]?
     }

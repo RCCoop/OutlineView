@@ -16,8 +16,14 @@ enum ChildSource<Data: Sequence> {
 }
 
 @available(macOS 10.15, *)
+public typealias OutlineViewData = Identifiable & Hashable
+
+@available(macOS 10.15, *)
 public struct OutlineView<Data: Sequence, Drop: DropReceiver>: NSViewControllerRepresentable
-where Drop.DataElement == Data.Element {
+where
+Drop.DataElement == Data.Element,
+Data.Element: OutlineViewData
+{
     public typealias NSViewControllerType = OutlineViewController<Data, Drop>
 
     let data: Data

@@ -3,7 +3,10 @@ import Combine
 
 @available(macOS 10.15, *)
 public class OutlineViewController<Data: Sequence, Drop: DropReceiver>: NSViewController
-where Drop.DataElement == Data.Element {
+where
+Drop.DataElement == Data.Element,
+Data.Element: OutlineViewData
+{
     let outlineView = RCOutlineView<Data>()
     let scrollView = NSScrollView(frame: NSRect(x: 0, y: 0, width: 400, height: 400))
     
@@ -108,6 +111,7 @@ extension OutlineViewController {
         updater.performUpdates(
             outlineView: outlineView,
             oldStateTree: dataSource.treeMap,
+            oldHashKey: dataSource.hashKey,
             newState: newState,
             parent: nil)
 

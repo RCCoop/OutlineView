@@ -2,9 +2,14 @@ import XCTest
 @testable import OutlineView
 
 class OutlineViewUpdaterTests: XCTestCase {
-    struct TestItem: Identifiable, Equatable {
+    struct TestItem: OutlineViewData {
         var id: Int
         var children: [TestItem]?
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+            hasher.combine(children != nil)
+        }
     }
 
     let oldState = [
@@ -27,17 +32,38 @@ class OutlineViewUpdaterTests: XCTestCase {
 
     func testPerformUpdates() {
         let outlineView = TestOutlineView()
+        outlineView.addVirtualData(oldState)
+        
         var updater = OutlineViewUpdater<[TestItem]>()
         updater.assumeOutlineIsExpanded = true
 
         let oldStateTree = TreeMap(rootItems: oldState, itemIsExpanded: { _ in true })
+        let oldHashKey = outlineView.hashKey
         
         updater.performUpdates(
             outlineView: outlineView,
             oldStateTree: oldStateTree,
+            oldHashKey: oldHashKey,
             newState: newState,
             parent: nil)
 
+        outlineView.hashKey = [:]
+        outlineView.addVirtualData(newState)
+        let newHashKey = outlineView.hashKey
+        
+        XCTAssertEqual(oldHashKey.keys.sorted(),
+                       [0, 1, 2, 3, 4, 5, 6, 7])
+        
+        XCTAssertEqual(newHashKey.keys.sorted(),
+                       [0, 1, 3, 4, 5, 6, 8])
+        
+        XCTAssertNotEqual(newHashKey[0], oldHashKey[0])
+        XCTAssertNotEqual(newHashKey[6], oldHashKey[6])
+        XCTAssertEqual(newHashKey[1], oldHashKey[1])
+        XCTAssertEqual(newHashKey[3], oldHashKey[3])
+        XCTAssertEqual(newHashKey[4], oldHashKey[4])
+        XCTAssertEqual(newHashKey[5], oldHashKey[5])
+        
         XCTAssertEqual(
             outlineView.insertedItems.sorted(),
             [
@@ -55,7 +81,7 @@ class OutlineViewUpdaterTests: XCTestCase {
 
         XCTAssertEqual(
             outlineView.reloadedItems.sorted(),
-            [nil, 0, 1, 3, 6])
+            [0, 6])
     }
 }
 
@@ -79,6 +105,17 @@ extension OutlineViewUpdaterTests {
         var insertedItems = [UpdatedItem]()
         var removedItems = [UpdatedItem]()
         var reloadedItems = [Item.ID?]()
+        
+        var hashKey: [Int : Int] = [:]
+        
+        func addVirtualData(_ data: [OutlineViewItem<[TestItem]>]) {
+            for item in data {
+                hashKey[item.value.id] = item.value.hashValue
+                if let subItems = item.children {
+                    addVirtualData(subItems)
+                }
+            }
+        }
 
         override func insertItems(
             at indexes: IndexSet,

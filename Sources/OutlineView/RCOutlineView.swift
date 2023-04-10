@@ -5,7 +5,7 @@ import Foundation
 internal class RCOutlineView<Data>: NSOutlineView
 where
 Data: Sequence,
-Data.Element: Identifiable
+Data.Element: OutlineViewData
 {
     var menuProvider: ContextMenuHandlerInternal<Data.Element>? = nil
     

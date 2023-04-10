@@ -3,13 +3,17 @@ import Combine
 
 @available(macOS 10.15, *)
 class OutlineViewDataSource<Data: Sequence, Drop: DropReceiver>: NSObject, NSOutlineViewDataSource
-where Drop.DataElement == Data.Element {
+where
+Drop.DataElement == Data.Element,
+Data.Element: OutlineViewData
+{
     var items: [OutlineViewItem<Data>]
     var dropReceiver: Drop?
     var dragWriter: DragSourceWriter<Data.Element>?
     let childrenSource: ChildSource<Data>
     
     var treeMap: TreeMap<Data.Element.ID>
+    var hashKey: [Data.Element.ID : Int]
     
     private var willExpandToken: AnyCancellable?
     private var didCollapseToken: AnyCancellable?
@@ -19,8 +23,10 @@ where Drop.DataElement == Data.Element {
         self.childrenSource = childSource
         
         treeMap = TreeMap()
+        hashKey = [:]
         for item in items {
             treeMap.addItem(item.value.id, isLeaf: item.children == nil, intoItem: nil, atIndex: nil)
+            hashKey[item.value.id] = item.value.hashValue
         }
         
         super.init()
@@ -40,6 +46,23 @@ where Drop.DataElement == Data.Element {
         
     func rebuildIDTree(rootItems: [OutlineViewItem<Data>], outlineView: NSOutlineView) {
         treeMap = TreeMap(rootItems: rootItems, itemIsExpanded: { outlineView.isItemExpanded($0) })
+        
+        hashKey = [:]
+        for item in rootItems {
+            addToHashKey(item, outlineView: outlineView)
+        }
+    }
+    
+    private func addToHashKey(_ parent: OutlineViewItem<Data>, outlineView: NSOutlineView) {
+        hashKey[parent.value.id] = parent.value.hashValue
+        if outlineView.isItemExpanded(parent) {
+            parent.children?.forEach { addToHashKey($0, outlineView: outlineView) }
+        }
+    }
+    
+    private func removeFromHashKey(_ item: OutlineViewItem<Data>, outlineView: NSOutlineView) {
+        hashKey[item.value.id] = nil
+        item.children?.forEach { removeFromHashKey($0, outlineView: outlineView) }
     }
     
     private func typedItem(_ item: Any) -> OutlineViewItem<Data> {
@@ -145,8 +168,9 @@ private extension OutlineViewDataSource {
         else { return }
         
         let typedObjToExpand = typedItem(objectToExpand)
-        if let childIDs = typedObjToExpand.children?.map({ ($0.id, $0.children == nil) }) {
-            treeMap.expandItem(typedObjToExpand.value.id, children: childIDs)
+        if let children = typedObjToExpand.children {
+            children.forEach { addToHashKey($0, outlineView: outlineView) }
+            treeMap.expandItem(typedObjToExpand.value.id, children: children.map({ ($0.id, $0.children == nil) }))
         }
     }
     
@@ -156,6 +180,9 @@ private extension OutlineViewDataSource {
         else { return }
         
         let typedObjThatCollapsed = typedItem(collapsedObject)
+        typedObjThatCollapsed
+            .children?
+            .forEach { removeFromHashKey($0, outlineView: outlineView) }
         treeMap.collapseItem(typedObjThatCollapsed.value.id)
     }
     

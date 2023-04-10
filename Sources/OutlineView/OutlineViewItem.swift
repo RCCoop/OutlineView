@@ -8,7 +8,7 @@
 /// https://developer.apple.com/documentation/macos-release-notes/appkit-release-notes-for-macos-10_14
 @available(macOS 10.15, *)
 struct OutlineViewItem<Data: Sequence>: Equatable, Hashable, Identifiable
-where Data.Element: Identifiable {
+where Data.Element: OutlineViewData {
     var childSource: ChildSource<Data>
     var value: Data.Element
 

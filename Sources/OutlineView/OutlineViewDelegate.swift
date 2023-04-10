@@ -2,7 +2,7 @@ import Cocoa
 
 @available(macOS 10.15, *)
 class OutlineViewDelegate<Data: Sequence>: NSObject, NSOutlineViewDelegate
-where Data.Element: Identifiable {
+where Data.Element: OutlineViewData {
     let content: (Data.Element) -> NSView
     let selectionChanged: (Data.Element?) -> Void
     let separatorInsets: ((Data.Element) -> NSEdgeInsets)?
