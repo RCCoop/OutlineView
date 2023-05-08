@@ -1,5 +1,6 @@
 import SwiftUI
 import Cocoa
+import ContextMenuBuilder
 
 enum ChildSource<Data: Sequence> {
     case keyPath(KeyPath<Data.Element, Data?>)
@@ -14,6 +15,8 @@ enum ChildSource<Data: Sequence> {
         }
     }
 }
+
+public typealias ContextMenuHandler<T> = (NSEvent, T?) -> ([ContextMenuBuilder]?, T?)
 
 @available(macOS 10.15, *)
 public typealias OutlineViewData = Identifiable & Hashable

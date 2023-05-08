@@ -9,10 +9,15 @@ let package = Package(
             name: "OutlineView",
             targets: ["OutlineView"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/RCCoop/ContextMenuBuilder", .branch("main"))
+    ],
     targets: [
         .target(
             name: "OutlineView",
-            dependencies: []),
+            dependencies: [
+                "ContextMenuBuilder"
+            ]),
         .testTarget(
             name: "OutlineViewTests",
             dependencies: ["OutlineView"]),

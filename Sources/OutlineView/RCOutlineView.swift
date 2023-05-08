@@ -1,5 +1,8 @@
 import AppKit
+import ContextMenuBuilder
 import Foundation
+
+internal typealias ContextMenuHandlerInternal<T> = (NSEvent, T?) -> [ContextMenuBuilder]?
 
 @available(macOS 10.15, *)
 internal class RCOutlineView<Data>: NSOutlineView
@@ -27,9 +30,7 @@ Data.Element: OutlineViewData
         if let menuItems = menuProvider(event, clickedItem),
            !menuItems.isEmpty
         {
-            let menu = NSMenu()
-            menuItems.forEach { menu.addItem($0.menuItem()) }
-            return menu
+            return NSMenu(menuItems)
         } else {
             return nil
         }
