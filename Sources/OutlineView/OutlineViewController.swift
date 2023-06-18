@@ -16,6 +16,9 @@ Data.Element: OutlineViewData
 
     let childrenSource: ChildSource<Data>
     
+    /// Simple boolean to tell the notification listeners for `itemDidExpand` and `itemDidCollapse`
+    /// to stay silent so that model-initiated changes to expansion state won't interfere with UI-initiated
+    /// changes.
     var blockExpansionListener = false
     var expansionListeners = Set<AnyCancellable>()
     let expandedStateChanged: (Set<Data.Element.ID>) -> Void
@@ -104,14 +107,16 @@ Data.Element: OutlineViewData
 extension OutlineViewController {
     func updateData(newValue: Data) {
         let newState = newValue.map { OutlineViewItem(value: $0, children: childrenSource) }
-
+        let oldTreeMap = dataSource.treeMap
+        let oldHashKey = dataSource.hashKey
+        
         outlineView.beginUpdates()
 
         dataSource.items = newState
         updater.performUpdates(
             outlineView: outlineView,
-            oldStateTree: dataSource.treeMap,
-            oldHashKey: dataSource.hashKey,
+            oldStateTree: oldTreeMap,
+            oldHashKey: oldHashKey,
             newState: newState,
             parent: nil)
 
@@ -119,6 +124,23 @@ extension OutlineViewController {
         
         // After updates, dataSource must rebuild its idTree for future updates
         dataSource.rebuildIDTree(rootItems: newState, outlineView: outlineView)
+        
+        // If data in outlineView has changed, it's possible that the selected
+        // row has changed also, and we need to manually update the binding
+        // selection in order to make it reflect the new selection coming from
+        // the outlineView
+        let newHashKey = dataSource.hashKey
+        if oldHashKey != newHashKey {
+            // Do this in a DispatchQueue.main.async because without that, it was
+            // causing wrong values to be found for `currentSelection`
+            DispatchQueue.main.async {
+                let currentSelection = self.outlineView.item(atRow: self.outlineView.selectedRow) as? OutlineViewItem<Data>
+                let delegateSelection = self.delegate.selectedItem
+                if currentSelection?.value.id != delegateSelection?.value.id {
+                    self.delegate.selectionChanged(currentSelection?.value)
+                }
+            }
+        }
     }
 
     func changeSelectedItem(to item: Data.Element?) {

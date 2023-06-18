@@ -65,7 +65,11 @@ Data.Element: OutlineViewData
             data: data,
             childrenSource: childSource,
             content: content,
-            selectionChanged: { selection?.wrappedValue = $0 },
+            selectionChanged: { newVal in
+                if selection?.wrappedValue?.id != newVal?.id {
+                    selection?.wrappedValue = newVal
+                }
+            },
             expandedStateChanged: { expandedItems?.wrappedValue = $0 },
             separatorInsets: separatorInsets)
         controller.setIndentation(to: indentation)

@@ -109,10 +109,8 @@ where Data.Element: OutlineViewData {
     func outlineViewSelectionDidChange(_ notification: Notification) {
         let outlineView = notification.object as! NSOutlineView
         let newSelection = outlineView.item(atRow: outlineView.selectedRow).map(typedItem)
-        if selectedItem?.id != newSelection?.id {
-            selectedItem = newSelection
-            selectionChanged(selectedItem?.value)
-        }
+        selectedItem = newSelection
+        selectionChanged(selectedItem?.value)
     }
     
     func selectRow(
@@ -120,7 +118,7 @@ where Data.Element: OutlineViewData {
         in outlineView: NSOutlineView
     ) {
         // Returns -1 if row is not found.
-        let index = outlineView.row(forItem: selectedItem)
+        let index = outlineView.row(forItem: item)
         if index != -1 {
             outlineView.selectRowIndexes(IndexSet([index]), byExtendingSelection: false)
         } else {
