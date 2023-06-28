@@ -16,7 +16,7 @@ enum ChildSource<Data: Sequence> {
     }
 }
 
-public typealias ContextMenuHandler<T> = (NSEvent, T?) -> ([ContextMenuBuilder]?, T?)
+public typealias ContextMenuProvider<T> = (NSEvent, T?) -> ([ContextMenuBuilder]?, T?)
 
 @available(macOS 10.15, *)
 public typealias OutlineViewData = Identifiable & Hashable
@@ -53,7 +53,8 @@ Data.Element: OutlineViewData
     var indentation: CGFloat = 13.0
     var separatorVisibility: SeparatorVisibility
     var separatorColor: NSColor = .separatorColor
-    var contextMenuHandler: ContextMenuHandler<Data.Element>? = nil
+    var contextMenuProvider: ContextMenuProvider<Data.Element>? = nil
+    var isMenuDisplayed: ((Bool) -> Void)? = nil
     var dragDataSource: DragSourceWriter<Data.Element>?
     var dropReceiver: Drop? = nil
     var acceptedDropTypes: [NSPasteboard.PasteboardType]? = nil
@@ -91,7 +92,8 @@ Data.Element: OutlineViewData
         outlineController.setDragSourceWriter(dragDataSource)
         outlineController.setDropReceiver(dropReceiver)
         outlineController.setAcceptedDragTypes(acceptedDropTypes)
-        outlineController.setContextMenuHandler(contextMenuHandler)
+        outlineController.setContextMenuProvider(contextMenuProvider)
+        outlineController.setContextMenuListener(isMenuDisplayed)
     }
 }
 
@@ -121,9 +123,17 @@ public extension OutlineView {
     /// a menu, and the `Data.Element` at the clicked location. The return value of
     /// the closure is a tuple containing the `NSMenu` to display (if any), and the
     /// `Data.Element` to highlight (if any).
-    func contextMenu(_ handler: @escaping ContextMenuHandler<Data.Element>) -> Self {
+    func contextMenu(_ provider: @escaping ContextMenuProvider<Data.Element>) -> Self {
         var mutableSelf = self
-        mutableSelf.contextMenuHandler = handler
+        mutableSelf.contextMenuProvider = provider
+        return mutableSelf
+    }
+    
+    /// Provides a listener closure that sends a true or false value whenever the `OutlineView`'s context
+    /// menu is opened or closed with a boolean value for whether the menu is currently visible.
+    func contextMenuListener(_ listener: ((Bool) -> Void)?) -> Self {
+        var mutableSelf = self
+        mutableSelf.isMenuDisplayed = listener
         return mutableSelf
     }
 

@@ -195,16 +195,20 @@ extension OutlineViewController {
         }
     }
     
-    func setContextMenuHandler(_ handler: ContextMenuHandler<Data.Element>?) {
-        if let handler {
+    func setContextMenuProvider(_ provider: ContextMenuProvider<Data.Element>?) {
+        if let provider {
             outlineView.menuProvider = { [weak self] (event, clickedItem) in
-                let (menu, highlight) = handler(event, clickedItem)
+                let (menu, highlight) = provider(event, clickedItem)
                 self?.changeSelectedItem(to: highlight)
                 return menu
             }
         } else {
             outlineView.menuProvider = nil
         }
+    }
+    
+    func setContextMenuListener(_ listener: ((Bool) -> Void)?) {
+        outlineView.menuVisibleHandler = listener
     }
 
     func setRowSeparator(color: NSColor) {
